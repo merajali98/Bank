@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "account")

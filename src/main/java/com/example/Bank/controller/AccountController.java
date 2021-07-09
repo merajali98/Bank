@@ -16,8 +16,8 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Account> create(@RequestBody Account account){
+    @PostMapping("/createAccount")
+    public ResponseEntity<Account> createUserAccount(@RequestBody Account account){
 
         return ResponseEntity.ok(accountService.save(account));
 
