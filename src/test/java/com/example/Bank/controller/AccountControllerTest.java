@@ -1,6 +1,7 @@
 package com.example.Bank.controller;
 
 
+import com.example.Bank.dto.AccountDto;
 import com.example.Bank.entity.Account;
 import com.example.Bank.service.impl.AccountServiceImpl;
 import org.junit.Assert;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -18,6 +20,8 @@ import java.math.BigDecimal;
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
 
+    @Mock
+    private ModelMapper modelMapper;
 
     @InjectMocks
     private AccountController accountController;
@@ -27,19 +31,27 @@ public class AccountControllerTest {
 
     @Test
     public void itShouldCreateUserAccount_WhenAccountDetailsIsProvided(){
-        Account expectedResponse= Account.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
 
-        Mockito.when(accountService.save(expectedResponse)).thenReturn(expectedResponse);
-        final ResponseEntity<Account> actualResponse = accountController.createUserAccount(Account.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build());
+        //Given
+        AccountDto expectedResponseDto= AccountDto.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
+        Account expectedResponse=modelMapper.map(expectedResponseDto,Account.class);
 
-        Assert.assertEquals(expectedResponse,actualResponse.getBody());
+        //When
+        Mockito.when(accountService.save(modelMapper.map(expectedResponseDto,Account.class))).thenReturn(expectedResponse);
+        Mockito.when(modelMapper.map(expectedResponse,AccountDto.class)).thenReturn(expectedResponseDto);
+
+        //Then
+        final ResponseEntity<AccountDto> actualResponseDto = accountController.createUserAccount(expectedResponseDto);
+
+        Assert.assertEquals(expectedResponseDto,actualResponseDto.getBody());
 
     }
     @Test
     public void itShouldNotCreateUserAccount_WhenAccountDetailsIsNotProvided(){
 
         Mockito.when(accountService.save(null)).thenReturn(null);
-        final ResponseEntity<Account> actualResponse = accountController.createUserAccount(null);
+
+        final ResponseEntity<AccountDto> actualResponse = accountController.createUserAccount(null);
 
         Assert.assertNull(actualResponse.getBody());
 
