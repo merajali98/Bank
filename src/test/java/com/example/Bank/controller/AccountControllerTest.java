@@ -34,11 +34,10 @@ public class AccountControllerTest {
 
         //Given
         AccountDto expectedResponseDto= AccountDto.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
-        Account expectedResponse=modelMapper.map(expectedResponseDto,Account.class);
 
         //When
-        Mockito.when(accountService.save(modelMapper.map(expectedResponseDto,Account.class))).thenReturn(expectedResponse);
-        Mockito.when(modelMapper.map(expectedResponse,AccountDto.class)).thenReturn(expectedResponseDto);
+        Mockito.when(accountService.save(expectedResponseDto)).thenReturn(expectedResponseDto);
+
 
         //Then
         final ResponseEntity<AccountDto> actualResponseDto = accountController.createUserAccount(expectedResponseDto);

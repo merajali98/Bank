@@ -2,6 +2,7 @@ package com.example.Bank.service.impl;
 
 
 import com.example.Bank.Repository.AccountRepository;
+import com.example.Bank.dto.AccountDto;
 import com.example.Bank.entity.Account;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,11 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceImplTest {
+
+    @Mock
+    private ModelMapper modelMapper;
 
     @InjectMocks
     private AccountServiceImpl accountService;
@@ -25,12 +30,15 @@ public class AccountServiceImplTest {
     @Test
     public void itShouldCreateAccount_WhenAccountDetailsIsProvided(){
 
-        Account expectedResponse= Account.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
+        AccountDto expectedResponseDto= AccountDto.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
+        Account expectedResponse=modelMapper.map(expectedResponseDto,Account.class);
 
-        Mockito.when(accountRepository.save(expectedResponse)).thenReturn(expectedResponse);
-        final Account actualResponse = accountService.save(Account.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build());
+        Mockito.when(accountRepository.save(modelMapper.map(expectedResponseDto,Account.class))).thenReturn(expectedResponse);
+        Mockito.when(modelMapper.map(expectedResponse,AccountDto.class)).thenReturn(expectedResponseDto);
 
-        Assert.assertEquals(expectedResponse,actualResponse);
+        final AccountDto actualResponseDto = accountService.save(expectedResponseDto);
+
+        Assert.assertEquals(expectedResponseDto,actualResponseDto);
 
 
     }
@@ -39,9 +47,9 @@ public class AccountServiceImplTest {
 
 
         Mockito.when(accountRepository.save(null)).thenReturn(null);
-        final Account actualResponse = accountService.save(null);
+        final AccountDto actualResponseDto = accountService.save(null);
 
-        Assert.assertNull(actualResponse);
+        Assert.assertNull(actualResponseDto);
 
 
     }

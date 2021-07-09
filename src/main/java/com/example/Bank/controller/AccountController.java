@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/account")
 public class AccountController {
 
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Autowired
     private AccountService accountService;
@@ -24,9 +22,7 @@ public class AccountController {
     @PostMapping("/createAccount")
     public ResponseEntity<AccountDto> createUserAccount(@RequestBody AccountDto accountDto){
 
-        Account userAccountCreatedResponse = accountService.save(modelMapper.map(accountDto,Account.class));
-
-        return ResponseEntity.ok(modelMapper.map(userAccountCreatedResponse,AccountDto.class));
+        return ResponseEntity.ok(accountService.save(accountDto));
 
     }
 
