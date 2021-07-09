@@ -30,7 +30,7 @@ public class AccountServiceImplTest {
     @Test
     public void itShouldCreateAccount_WhenAccountDetailsIsProvided(){
 
-        AccountDto expectedResponseDto= AccountDto.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
+        AccountDto expectedResponseDto= AccountDto.builder().accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
         Account expectedResponse=modelMapper.map(expectedResponseDto,Account.class);
 
         Mockito.when(accountRepository.save(modelMapper.map(expectedResponseDto,Account.class))).thenReturn(expectedResponse);

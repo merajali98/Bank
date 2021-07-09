@@ -33,7 +33,7 @@ public class AccountControllerTest {
     public void itShouldCreateUserAccount_WhenAccountDetailsIsProvided(){
 
         //Given
-        AccountDto expectedResponseDto= AccountDto.builder().accountId(1L).accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
+        AccountDto expectedResponseDto= AccountDto.builder().accountNumber("1234").currentBalance(BigDecimal.valueOf(0)).build();
 
         //When
         Mockito.when(accountService.save(expectedResponseDto)).thenReturn(expectedResponseDto);
