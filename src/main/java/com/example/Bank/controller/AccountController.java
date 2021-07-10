@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/account")
+@RequestMapping("v1.0")
 public class AccountController {
 
 
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/createAccount")
+    @PostMapping("/accounts")
     public ResponseEntity<AccountDto> createUserAccount(@RequestBody AccountDto accountDto){
 
         return ResponseEntity.ok(accountService.save(accountDto));
